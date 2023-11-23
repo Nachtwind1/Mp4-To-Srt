@@ -7,7 +7,13 @@ A Python Programm That Converts Mp4 files to Srt files
 
 python3, opencv and numpy
 
-pip install opencv, numpy
+### How to install
+
+#### [Python](https://www.python.org/downloads/)
+
+if you have python setup do
+
+#### pip install opencv, numpy
 
 ## Example
 
