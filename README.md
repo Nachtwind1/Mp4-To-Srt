@@ -13,7 +13,8 @@ python3, opencv and numpy
 
 if you have python setup do
 
-#### pip install opencv, numpy
+#### pip install opencv-python
+#### pip install  numpy
 
 ## Example
 
