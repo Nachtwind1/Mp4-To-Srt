@@ -15,6 +15,7 @@ if you have python setup do
 
 #### pip install opencv-python
 #### pip install  numpy
+#### pip install Pillow
 
 ## Example
 
