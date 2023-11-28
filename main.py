@@ -32,7 +32,7 @@ else:
 
 #Janky Code
 
-# Use given if it is Truthy, 0 is Falsey (empty string)
+# Use given if it is Truthy, 0 if it is Falsey (empty string)
 idoffset = int(args.idoffset or 0)
 milisecondsoffset = int(args.msoffset or 0)
 
@@ -42,13 +42,15 @@ else:
     print("found no file at that location")
     exit()
 
+srt = []
 id = 0
-
 frm = 1
 print('Generating Ascii art')
 for x in range(total_frames):
     convert_to_png.print_progress_bar(x, total_frames)
-    srt = srt + "\n" + convert_to_ascii.convert(frames[x], id, x, frm, args.collums) + "\n"
+
+    srt.append(convert_to_ascii.convert(frames[x], id, x, frm, args.collums))
+    #srt = srt + "\n" + convert_to_ascii.convert(frames[x], id, x, frm, args.collums) + "\n"
     frm += 1
     # 33.333333 milliseconds would be a frame so every third frame we make it 34 ms (33+33+34=100)
     if frm == 3:
@@ -58,4 +60,4 @@ for x in range(total_frames):
     else:
         id += 33
 #write to file
-open("output/subtitles.srt","w").write(srt)
+open("output/subtitles.srt","w").write("\n".join(srt))

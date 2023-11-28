@@ -15,11 +15,13 @@ def convert(vidfile, startms, idoffset):
     fps = cam.get(cv2.CAP_PROP_FPS)
 
     cam.set(cv2.CAP_PROP_POS_MSEC, startms + idoffset * 1000 / fps)
-    total_frames = int(cam.get(cv2.CAP_PROP_FRAME_COUNT)) - int(cam.get(cv2.CAP_PROP_POS_FRAMES))
+
+    pos_after_offset = int(cam.get(cv2.CAP_PROP_POS_FRAMES))
+    total_frames = int(cam.get(cv2.CAP_PROP_FRAME_COUNT)) - pos_after_offset
 
     print('Extracting Frames...')
     while True:
-        frame_num = int(cam.get(cv2.CAP_PROP_POS_FRAMES))
+        frame_num = int(cam.get(cv2.CAP_PROP_POS_FRAMES)) - pos_after_offset
         print_progress_bar(frame_num, total_frames)
 
         ret, frame = cam.read()
