@@ -37,7 +37,7 @@ idoffset = int(args.idoffset or 0)
 milisecondsoffset = int(args.msoffset or 0)
 
 if os.path.exists(file):
-    fps, total_frames, frames = convert_to_png.convert(file, milisecondsoffset)
+    fps, total_frames, frames = convert_to_png.convert(file, milisecondsoffset, idoffset)
 else:
     print("found no file at that location")
     exit()
@@ -47,7 +47,7 @@ id = 0
 frm = 1
 print('Generating Ascii art')
 for x in range(len(frames)):
-    srt = srt + "\n" + convert_to_ascii.convert(frames[x], id, int(x + int(idoffset)), frm, args.collums) + "\n"
+    srt = srt + "\n" + convert_to_ascii.convert(frames[x], id, x, frm, args.collums) + "\n"
     frm += 1
     # 33.333333 milliseconds would be a frame so every third frame we make it 34 ms (33+33+34=100)
     if frm == 3:

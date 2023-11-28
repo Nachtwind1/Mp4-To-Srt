@@ -8,14 +8,14 @@ def print_progress_bar(iteration, total):
     progress = f"Progress: {iteration}/{total} - {percent}%"
     print(progress, end='\r', flush=True)
 
-def convert(vidfile, startms):
+def convert(vidfile, startms, idoffset):
     frames = []
 
     cam = cv2.VideoCapture(vidfile)
     fps = cam.get(cv2.CAP_PROP_FPS)
     total_frames = int(cam.get(cv2.CAP_PROP_FRAME_COUNT))
 
-    cam.set(cv2.CAP_PROP_POS_MSEC, startms)
+    cam.set(cv2.CAP_PROP_POS_MSEC, startms + idoffset * 1000 / fps)
 
     print('Extracting Frames...')
     while True:
