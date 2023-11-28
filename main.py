@@ -33,15 +33,11 @@ fpsdiv = fps / 30
 #Janky Code
 files = 0
 if os.path.exists(file):
-    convert_to_png.convert(file,fpsdiv)
+    frames = convert_to_png.convert(file,fpsdiv)
 else:
     print("found no file at that location")
     exit()
-while(True):
-    if (os.path.exists(f'temp/vids/{files}.png')):
-        files += 1
-    else:
-        break
+
 id = 0
 if args.idoffset != "":
     idoffset = args.idoffset
@@ -53,8 +49,8 @@ else:
     milisecondsoffset = 0
 frm = 1
 print('Generating Ascii art')
-for x in range(files):
-    srt = srt + "\n" + convert_to_ascii.convert(f'./temp/vids/{x}.png',int(id+int(milisecondsoffset)),int(x + int(idoffset)),frm,args.collums) + "\n"
+for x in range(len(frames)):
+    srt = srt + "\n" + convert_to_ascii.convert(frames[x],int(id+int(milisecondsoffset)),int(x + int(idoffset)),frm,args.collums) + "\n"
     frm += 1
     # 33.333333 milliseconds would be a frame so every third frame we make it 34 ms (33+33+34=100)
     if frm == 3:

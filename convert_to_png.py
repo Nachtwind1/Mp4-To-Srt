@@ -1,8 +1,6 @@
 # Importing all necessary libraries 
 import cv2 
-import os 
-import threading
-import time
+from PIL import Image
 
 def convert(vidfile, fpsdiv):
     # Read the video from specified path 
@@ -14,6 +12,8 @@ def convert(vidfile, fpsdiv):
     # frame 
     currentframe = 0
 
+    frames = []
+
     while currentframe < total_frames: 
         # Set the frame position
         cam.set(cv2.CAP_PROP_POS_FRAMES, currentframe)
@@ -22,12 +22,7 @@ def convert(vidfile, fpsdiv):
         ret, frame = cam.read() 
 
         if ret: 
-            # if video is still left continue creating images 
-            name = './temp/vids/' + str(int(currentframe/fpsdiv)) + '.png'#converts 60 fps to 30 fps
-            print('Creating...' + name) 
-
-            # writing the extracted images 
-            cv2.imwrite(name,frame)
+            frames.append(Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)))
 
             # increasing counter so that it will 
             # show how many frames are created 
@@ -38,3 +33,5 @@ def convert(vidfile, fpsdiv):
     # Release all space and windows once done 
     cam.release() 
     cv2.destroyAllWindows() 
+
+    return frames

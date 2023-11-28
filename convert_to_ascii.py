@@ -49,7 +49,7 @@ def getEqualWidthScale(scale, width):
         equal_width_scale += char + " " * (width - 1)
     return equal_width_scale
 
-def convertImageToAscii(fileName, cols, scale):
+def convertImageToAscii(frame, cols, scale):
     """
     Given Image and dims (rows, cols) returns an m*n list of Images 
     """
@@ -57,7 +57,7 @@ def convertImageToAscii(fileName, cols, scale):
     global gscale1, gscale2
 
     # open image and convert to grayscale
-    image = Image.open(fileName).convert('L')
+    image = frame.convert('L')
 
     # store dimensions
     W, H = image.size[0], image.size[1]
@@ -125,11 +125,8 @@ def convertImageToAscii(fileName, cols, scale):
 
 
 # main() function
-def convert(Fileimg, frm,id,tfrm,clms):
+def convert(frame, frm,id,tfrm,clms):
 	rtn = ""
-	
-
-	imgFile = Fileimg
 
 	# set scale default as 0.43 which suits
 	# a Courier font
@@ -146,7 +143,7 @@ def convert(Fileimg, frm,id,tfrm,clms):
 
 	print('generating ASCII art...')
 	# convert image to ascii txt
-	aimg = convertImageToAscii(imgFile, cols, scale)
+	aimg = convertImageToAscii(frame, cols, scale)
 
 	
 	i = 0
