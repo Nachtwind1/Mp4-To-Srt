@@ -46,7 +46,8 @@ id = 0
 
 frm = 1
 print('Generating Ascii art')
-for x in range(len(frames)):
+for x in range(total_frames):
+    convert_to_png.print_progress_bar(x, total_frames)
     srt = srt + "\n" + convert_to_ascii.convert(frames[x], id, x, frm, args.collums) + "\n"
     frm += 1
     # 33.333333 milliseconds would be a frame so every third frame we make it 34 ms (33+33+34=100)

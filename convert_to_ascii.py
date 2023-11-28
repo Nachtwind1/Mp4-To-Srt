@@ -61,7 +61,7 @@ def convertImageToAscii(frame, cols, scale):
 
     # store dimensions
     W, H = image.size[0], image.size[1]
-    print("input image dims: %d x %d" % (W, H))
+    #print("input image dims: %d x %d" % (W, H))
 
     # compute width of tile
     w = W / cols
@@ -72,8 +72,8 @@ def convertImageToAscii(frame, cols, scale):
     # compute number of rows
     rows = int(H / h)
 
-    print("cols: %d, rows: %d" % (cols, rows))
-    print("tile dims: %d x %d" % (w, h))
+    #print("cols: %d, rows: %d" % (cols, rows))
+    #print("tile dims: %d x %d" % (w, h))
 
     # check if image size is too small
     if cols > W or rows > H:
@@ -141,7 +141,6 @@ def convert(frame, frm,id,tfrm,clms):
 	else:
 		print("ERROR"*1000)
 
-	print('generating ASCII art...')
 	# convert image to ascii txt
 	aimg = convertImageToAscii(frame, cols, scale)
 

@@ -25,6 +25,7 @@ def convert(vidfile, startms, idoffset):
         ret, frame = cam.read()
         if not ret: break
         frames.append(Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)))
+    print()
 
     cam.release()
 
