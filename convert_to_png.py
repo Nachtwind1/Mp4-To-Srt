@@ -2,6 +2,7 @@
 import cv2 
 from PIL import Image
 
+# function to print an in-place progress bar (doesn't spam terminal and looks very clean)
 def print_progress_bar(iteration, total):
     percent = "{:.1f}".format(100 * (iteration / float(total)))
     progress = f"Progress: {iteration}/{total} - {percent}%"
