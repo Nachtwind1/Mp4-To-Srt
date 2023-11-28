@@ -13,12 +13,12 @@ from PIL import Image
 gscale2 = '$8obdpq0Lun1+"`'
 def id_to_time_format(id):
     # Calculate hours, minutes, seconds, and milliseconds
-    hours = id // 3600000  # 1 hour = 3600 seconds * 1000 milliseconds
+    hours = int(id // 3600000)  # 1 hour = 3600 seconds * 1000 milliseconds
     id %= 3600000
-    minutes = id // 60000  # 1 minute = 60 seconds * 1000 milliseconds
+    minutes = int(id // 60000)  # 1 minute = 60 seconds * 1000 milliseconds
     id %= 60000
-    seconds = id // 1000
-    milliseconds = id % 1000
+    seconds = int(id // 1000)
+    milliseconds = int(id % 1000)
 
     # Format the time components as strings with leading zeros
     time_format = f"{hours:02d}:{minutes:02d}:{seconds:02d},{milliseconds:03d}"
@@ -125,7 +125,7 @@ def convertImageToAscii(frame, cols, scale):
 
 
 # main() function
-def convert(frame, frm,id,tfrm,clms):
+def convert(frame, frame_num, ms_per_frame, clms):
 	rtn = ""
 
 	# set scale default as 0.43 which suits
@@ -144,15 +144,8 @@ def convert(frame, frm,id,tfrm,clms):
 	# convert image to ascii txt
 	aimg = convertImageToAscii(frame, cols, scale)
 
-	
-	i = 0
-
-	if tfrm == 2:
-		frm = frm - 1
-		efrm = frm + 34
-	else:
-		efrm = frm + 33
-	rtn = f'{id+1}\n{id_to_time_format(frm)} --> {id_to_time_format(efrm)}'
+	ms_pos = frame_num * ms_per_frame
+	rtn = f'{frame_num + 1}\n{id_to_time_format(ms_pos)} --> {id_to_time_format(ms_pos + ms_per_frame)}'
 	for row in aimg:
 		rtn = rtn + "\n" +  row
 

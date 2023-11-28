@@ -13,8 +13,9 @@ def convert(vidfile, startms, idoffset):
 
     cam = cv2.VideoCapture(vidfile)
     fps = cam.get(cv2.CAP_PROP_FPS)
+    ms_per_frame = 1000 / fps
 
-    cam.set(cv2.CAP_PROP_POS_MSEC, startms + idoffset * 1000 / fps)
+    cam.set(cv2.CAP_PROP_POS_MSEC, startms + idoffset * ms_per_frame)
 
     pos_after_offset = int(cam.get(cv2.CAP_PROP_POS_FRAMES))
     total_frames = int(cam.get(cv2.CAP_PROP_FRAME_COUNT)) - pos_after_offset
@@ -31,4 +32,4 @@ def convert(vidfile, startms, idoffset):
 
     cam.release()
 
-    return fps, len(frames), frames
+    return ms_per_frame, len(frames), frames
