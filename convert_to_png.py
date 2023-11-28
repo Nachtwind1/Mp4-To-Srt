@@ -13,9 +13,9 @@ def convert(vidfile, startms, idoffset):
 
     cam = cv2.VideoCapture(vidfile)
     fps = cam.get(cv2.CAP_PROP_FPS)
-    total_frames = int(cam.get(cv2.CAP_PROP_FRAME_COUNT))
 
     cam.set(cv2.CAP_PROP_POS_MSEC, startms + idoffset * 1000 / fps)
+    total_frames = int(cam.get(cv2.CAP_PROP_FRAME_COUNT)) - int(cam.get(cv2.CAP_PROP_POS_FRAMES))
 
     print('Extracting Frames...')
     while True:
@@ -29,4 +29,4 @@ def convert(vidfile, startms, idoffset):
 
     cam.release()
 
-    return fps, total_frames, frames
+    return fps, len(frames), frames
