@@ -2,36 +2,29 @@
 import cv2 
 from PIL import Image
 
-def convert(vidfile, fpsdiv):
-    # Read the video from specified path 
-    cam = cv2.VideoCapture(vidfile) 
+def print_progress_bar(iteration, total):
+    percent = "{:.1f}".format(100 * (iteration / float(total)))
+    progress = f"Progress: {iteration}/{total} - {percent}%"
+    print(progress, end='\r', flush=True)
 
-    # Get the total number of frames in the video
-    total_frames = int(cam.get(cv2.CAP_PROP_FRAME_COUNT))
-
-    # frame 
-    currentframe = 0
-
+def convert(vidfile, startms):
     frames = []
 
-    while currentframe < total_frames: 
-        # Set the frame position
-        cam.set(cv2.CAP_PROP_POS_FRAMES, currentframe)
+    cam = cv2.VideoCapture(vidfile)
+    fps = cam.get(cv2.CAP_PROP_FPS)
+    total_frames = int(cam.get(cv2.CAP_PROP_FRAME_COUNT))
 
-        # reading from frame 
-        ret, frame = cam.read() 
+    cam.set(cv2.CAP_PROP_POS_MSEC, startms)
 
-        if ret: 
-            frames.append(Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)))
+    print('Extracting Frames...')
+    while True:
+        frame_num = int(cam.get(cv2.CAP_PROP_POS_FRAMES))
+        print_progress_bar(frame_num, total_frames)
 
-            # increasing counter so that it will 
-            # show how many frames are created 
-            currentframe += fpsdiv
+        ret, frame = cam.read()
+        if not ret: break
+        frames.append(Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)))
 
-        else: 
-            break
-    # Release all space and windows once done 
-    cam.release() 
-    cv2.destroyAllWindows() 
+    cam.release()
 
-    return frames
+    return fps, total_frames, frames

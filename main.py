@@ -29,24 +29,21 @@ else:
         exit()
 
 
-fpsdiv = fps / 30
+
 #Janky Code
-files = 0
+
+# Use given if it is Truthy, 0 is Falsey (empty string)
+idoffset = int(args.idoffset or 0)
+milisecondsoffset = int(args.msoffset or 0)
+
 if os.path.exists(file):
-    frames = convert_to_png.convert(file,fpsdiv)
+    fps, total_frames, frames = convert_to_png.convert(file, milisecondsoffset)
 else:
     print("found no file at that location")
     exit()
 
 id = 0
-if args.idoffset != "":
-    idoffset = args.idoffset
-else:
-    idoffset = 0
-if args.msoffset != "":
-    milisecondsoffset = args.msoffset
-else:
-    milisecondsoffset = 0
+
 frm = 1
 print('Generating Ascii art')
 for x in range(len(frames)):
@@ -61,16 +58,3 @@ for x in range(len(frames)):
         id += 33
 #write to file
 open("output/subtitles.srt","w").write(srt)
-
-
-
-
-
-#remove all temporary files
-id = 0
-while(True):
-    if (os.path.exists(f'temp/vids/{id}.png')):
-        os.remove(f'temp/vids/{id}.png')
-    else:
-        break
-    id += 1
