@@ -47,7 +47,7 @@ id = 0
 frm = 1
 print('Generating Ascii art')
 for x in range(len(frames)):
-    srt = srt + "\n" + convert_to_ascii.convert(frames[x],int(id+int(milisecondsoffset)),int(x + int(idoffset)),frm,args.collums) + "\n"
+    srt = srt + "\n" + convert_to_ascii.convert(frames[x], id, int(x + int(idoffset)), frm, args.collums) + "\n"
     frm += 1
     # 33.333333 milliseconds would be a frame so every third frame we make it 34 ms (33+33+34=100)
     if frm == 3:
