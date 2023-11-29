@@ -13,12 +13,12 @@ from PIL import Image
 gscale2 = '$8obdpq0Lun1+"`'
 def id_to_time_format(id):
     # Calculate hours, minutes, seconds, and milliseconds
-    hours = id // 3600000  # 1 hour = 3600 seconds * 1000 milliseconds
+    hours = int(id // 3600000)  # 1 hour = 3600 seconds * 1000 milliseconds
     id %= 3600000
-    minutes = id // 60000  # 1 minute = 60 seconds * 1000 milliseconds
+    minutes = int(id // 60000)  # 1 minute = 60 seconds * 1000 milliseconds
     id %= 60000
-    seconds = id // 1000
-    milliseconds = id % 1000
+    seconds = int(id // 1000)
+    milliseconds = int(id % 1000)
 
     # Format the time components as strings with leading zeros
     time_format = f"{hours:02d}:{minutes:02d}:{seconds:02d},{milliseconds:03d}"
@@ -49,7 +49,7 @@ def getEqualWidthScale(scale, width):
         equal_width_scale += char + " " * (width - 1)
     return equal_width_scale
 
-def convertImageToAscii(fileName, cols, scale):
+def convertImageToAscii(frame, cols, scale):
     """
     Given Image and dims (rows, cols) returns an m*n list of Images 
     """
@@ -57,11 +57,11 @@ def convertImageToAscii(fileName, cols, scale):
     global gscale1, gscale2
 
     # open image and convert to grayscale
-    image = Image.open(fileName).convert('L')
+    image = frame.convert('L')
 
     # store dimensions
     W, H = image.size[0], image.size[1]
-    print("input image dims: %d x %d" % (W, H))
+    #print("input image dims: %d x %d" % (W, H))
 
     # compute width of tile
     w = W / cols
@@ -72,8 +72,8 @@ def convertImageToAscii(fileName, cols, scale):
     # compute number of rows
     rows = int(H / h)
 
-    print("cols: %d, rows: %d" % (cols, rows))
-    print("tile dims: %d x %d" % (w, h))
+    #print("cols: %d, rows: %d" % (cols, rows))
+    #print("tile dims: %d x %d" % (w, h))
 
     # check if image size is too small
     if cols > W or rows > H:
@@ -91,9 +91,6 @@ def convertImageToAscii(fileName, cols, scale):
         # correct last tile
         if j == rows - 1:
             y2 = H
-
-        # append an empty string
-        aimg.append("")
 
         for i in range(cols):
 
@@ -116,20 +113,20 @@ def convertImageToAscii(fileName, cols, scale):
             if gsval == '"':
                 gsval = '" '
             elif gsval == "`":
-                gsval = "` "   
-            # append ascii char to string
-            aimg[j] += gsval
+                gsval = "` "
+
+            # append ascii char to array
+            aimg.append(gsval)
+
+        aimg.append('\n')
 
     # return txt image
-    return aimg
+    return "".join(aimg)
 
 
 # main() function
-def convert(Fileimg, frm,id,tfrm,clms):
-	rtn = ""
-	
-
-	imgFile = Fileimg
+def convert(frame, frame_num, ms_per_frame, clms):
+	rtn = []
 
 	# set scale default as 0.43 which suits
 	# a Courier font
@@ -144,21 +141,8 @@ def convert(Fileimg, frm,id,tfrm,clms):
 	else:
 		print("ERROR"*1000)
 
-	print('generating ASCII art...')
 	# convert image to ascii txt
-	aimg = convertImageToAscii(imgFile, cols, scale)
+	aimg = convertImageToAscii(frame, cols, scale)
 
-	
-	i = 0
-
-	if tfrm == 2:
-		frm = frm - 1
-		efrm = frm + 34
-	else:
-		efrm = frm + 33
-	rtn = f'{id+1}\n{id_to_time_format(frm)} --> {id_to_time_format(efrm)}'
-	for row in aimg:
-		rtn = rtn + "\n" +  row
-
-	
-	return rtn
+	ms_pos = frame_num * ms_per_frame
+	return f'{frame_num + 1}\n{id_to_time_format(ms_pos)} --> {id_to_time_format(ms_pos + ms_per_frame)}\n{aimg}'

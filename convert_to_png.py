@@ -1,40 +1,35 @@
 # Importing all necessary libraries 
 import cv2 
-import os 
-import threading
-import time
+from PIL import Image
 
-def convert(vidfile, fpsdiv):
-    # Read the video from specified path 
-    cam = cv2.VideoCapture(vidfile) 
+# function to print an in-place progress bar (doesn't spam terminal and looks very clean)
+def print_progress_bar(iteration, total):
+    percent = "{:.1f}".format(100 * (iteration / float(total)))
+    progress = f"Progress: {iteration}/{total} - {percent}%"
+    print(progress, end='\r', flush=True)
 
-    # Get the total number of frames in the video
-    total_frames = int(cam.get(cv2.CAP_PROP_FRAME_COUNT))
+def convert(vidfile, startms, idoffset):
+    frames = []
 
-    # frame 
-    currentframe = 0
+    cam = cv2.VideoCapture(vidfile)
+    fps = cam.get(cv2.CAP_PROP_FPS)
+    ms_per_frame = 1000 / fps
 
-    while currentframe < total_frames: 
-        # Set the frame position
-        cam.set(cv2.CAP_PROP_POS_FRAMES, currentframe)
+    cam.set(cv2.CAP_PROP_POS_MSEC, startms + idoffset * ms_per_frame)
 
-        # reading from frame 
-        ret, frame = cam.read() 
+    pos_after_offset = int(cam.get(cv2.CAP_PROP_POS_FRAMES))
+    total_frames = int(cam.get(cv2.CAP_PROP_FRAME_COUNT)) - pos_after_offset
 
-        if ret: 
-            # if video is still left continue creating images 
-            name = './temp/vids/' + str(int(currentframe/fpsdiv)) + '.png'#converts 60 fps to 30 fps
-            print('Creating...' + name) 
+    print('Extracting Frames...')
+    while True:
+        frame_num = int(cam.get(cv2.CAP_PROP_POS_FRAMES)) - pos_after_offset
+        print_progress_bar(frame_num, total_frames)
 
-            # writing the extracted images 
-            cv2.imwrite(name,frame)
+        ret, frame = cam.read()
+        if not ret: break
+        frames.append(Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)))
+    print()
 
-            # increasing counter so that it will 
-            # show how many frames are created 
-            currentframe += fpsdiv
+    cam.release()
 
-        else: 
-            break
-    # Release all space and windows once done 
-    cam.release() 
-    cv2.destroyAllWindows() 
+    return ms_per_frame, len(frames), frames
