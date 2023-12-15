@@ -125,7 +125,7 @@ def convertImageToAscii(frame, cols, scale):
 
 
 # main() function
-def convert(frame, frame_num, ms_per_frame, clms):
+def convert(frame, frame_num, ms_per_frame, clms, submilisecondoffset):
 	rtn = []
 
 	# set scale default as 0.43 which suits
@@ -145,4 +145,4 @@ def convert(frame, frame_num, ms_per_frame, clms):
 	aimg = convertImageToAscii(frame, cols, scale)
 
 	ms_pos = frame_num * ms_per_frame
-	return f'{frame_num + 1}\n{id_to_time_format(ms_pos)} --> {id_to_time_format(ms_pos + ms_per_frame)}\n{aimg}'
+	return f'{frame_num + 1}\n{id_to_time_format(ms_pos + submilisecondoffset)} --> {id_to_time_format(ms_pos + ms_per_frame + submilisecondoffset)}\n{aimg}'
