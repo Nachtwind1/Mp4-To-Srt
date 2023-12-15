@@ -29,3 +29,4 @@ if you have python setup do
 |--collums|Yes|How many characters Per Row|
 |--msoffset|No|After How many milliseconds should the animation start|
 |--idoffset|No|At which subtitle id should it start|
+|--submsoffset|No|at which milisecond the subtitles start|
