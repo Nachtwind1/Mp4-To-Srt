@@ -9,6 +9,7 @@ parser = argparse.ArgumentParser(description="mp4 to srt")
 parser.add_argument('--file', dest='file', required=True)
 parser.add_argument('--collums', dest='collums', required=True)
 parser.add_argument('--msoffset', dest='msoffset', required=False)
+parser.add_argument('--submsoffset', dest='submsoffset', required=False)
 parser.add_argument('--idoffset', dest='idoffset', required=False)
 
 args = parser.parse_args()
@@ -24,6 +25,9 @@ else:
 idoffset = int(args.idoffset or 0)
 milisecondsoffset = int(args.msoffset or 0)
 
+submilisecondoffset = int(args.submsoffset or 0)
+
+
 if os.path.exists(file):
     ms_per_frame, total_frames, frames = convert_to_png.convert(file, milisecondsoffset, idoffset)
 else:
@@ -35,7 +39,7 @@ print('Generating Ascii art')
 for x in range(total_frames):
     convert_to_png.print_progress_bar(x + 1, total_frames)
 
-    srt.append(convert_to_ascii.convert(frames[x], x, ms_per_frame, args.collums))
+    srt.append(convert_to_ascii.convert(frames[x], x, ms_per_frame, args.collums, submilisecondoffset))
 
 print()
 
