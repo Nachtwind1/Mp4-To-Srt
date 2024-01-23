@@ -23,7 +23,7 @@ if you have python setup do
 
 ## What do The Arguments mean
 
-|Argument|Rquired|Description|
+|Argument|Required|Description|
 |----|-----|-------|
 |--file|Yes|Your input mp4 file|
 |--collums|Yes|How many characters Per Row|
